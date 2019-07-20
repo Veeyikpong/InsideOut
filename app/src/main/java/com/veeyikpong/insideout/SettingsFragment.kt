@@ -1,21 +1,19 @@
 package com.veeyikpong.insideout
 
 
-import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.fragment_edit_location_bottom_sheet.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 import java.lang.NumberFormatException
 
-class EditLocationBottomSheetFragment() : Fragment() {
+class SettingsFragment() : Fragment() {
 
     private lateinit var onEditGeofenceListener: OnEditGeofenceListener
 
@@ -28,7 +26,7 @@ class EditLocationBottomSheetFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_location_bottom_sheet, container, false)
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,6 +102,14 @@ class EditLocationBottomSheetFragment() : Fragment() {
             }
         })
 
+        et_wireless_name.setOnEditorActionListener { v, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                CommonUtils.hideKeyboard(activity!!)
+            }
+
+            true
+        }
+
         btn_check.setOnClickListener {
             if (validate()) {
                 if(!::onEditGeofenceListener.isInitialized){
@@ -116,7 +122,8 @@ class EditLocationBottomSheetFragment() : Fragment() {
                             et_latitude.text.toString().toDouble(),
                             et_longitude.text.toString().toDouble()
                         ),
-                        et_radius.text.toString().toFloat()
+                        et_radius.text.toString().toFloat(),
+                        et_wireless_name.text.toString()
                     ),
                     LatLng(et_device_latitude.text.toString().toDouble(), et_device_longitude.text.toString().toDouble())
                 )

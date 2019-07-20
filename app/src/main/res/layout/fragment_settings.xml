@@ -10,7 +10,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="@dimen/label_text_size"
             android:textStyle="bold"
             android:text="@string/device_location"
     />
@@ -55,7 +55,7 @@
             android:layout_marginTop="@dimen/input_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="@dimen/label_text_size"
             android:textStyle="bold"
             android:text="@string/geofence_area"
     />
@@ -117,7 +117,8 @@
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_wireless_name"
                 android:textSize="@dimen/input_text_size"
-                android:inputType="numberDecimal|numberSigned"
+                android:inputType="text"
+                android:imeOptions="actionDone"
                 android:hint="@string/hint_wifi_network"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

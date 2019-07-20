@@ -7,7 +7,7 @@
     <string name="hint_latitude">Latitude</string>
     <string name="hint_longitude">Longitude</string>
     <string name="hint_radius">Radius</string>
-    <string name="hint_wifi_network">Wifi Network Name</string>
+    <string name="hint_wifi_network">Full Wifi Network Name (Optional)</string>
 
     <string name="status">Status: </string>
     <string name="unknown">Unknown</string>
