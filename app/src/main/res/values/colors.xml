@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#216397</color>
+    <color name="colorPrimaryDark">#134E7C</color>
+    <color name="colorAccent">#69A9F1</color>
+
+    <color name="geofencing_area_transparent_blue">#1A40C4FF</color>
+    <color name="default_text_color">#DF000000</color>
+</resources>

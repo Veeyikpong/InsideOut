@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">InsideOut</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="device_location">Device location</string>
+
+    <string name="geofence_area">Geofence Area</string>
+    <string name="hint_latitude">Latitude</string>
+    <string name="hint_longitude">Longitude</string>
+    <string name="hint_radius">Radius</string>
+    <string name="hint_wifi_network">Wifi Network Name</string>
+
+    <string name="device_inside_geofence_status">Device inside geofence</string>
+
+    <!--Bottom fragment-->
+    <string name="check">Check</string>
+    <string name="error_invalid_latitude">Please enter a valid latitude</string>
+    <string name="error_invalid_longitude">Please enter a valid longitude</string>
+    <string name="error_invalid_radius">Please enter a valid radius</string>
+</resources>
