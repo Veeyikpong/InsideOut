@@ -6,4 +6,6 @@
 
     <color name="geofencing_area_transparent_blue">#1A40C4FF</color>
     <color name="default_text_color">#DF000000</color>
+    <color name="lightGrey">#E4E2E2</color>
+    <color name="successGreen">#22814C</color>
 </resources>

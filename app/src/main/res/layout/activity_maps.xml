@@ -10,14 +10,36 @@
               android:id="@+id/map"
               tools:context=".MapsActivity"
               map:layout_constraintTop_toTopOf="parent"
-              map:layout_constraintBottom_toTopOf="@id/tv_status"
+              map:layout_constraintBottom_toTopOf="@id/ll_status"
               android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
-    <TextView
+    <LinearLayout
+            android:id="@+id/ll_status"
+            android:padding="@dimen/default_padding"
             map:layout_constraintBottom_toTopOf="@id/bottomFragmentContainer"
-            android:id="@+id/tv_status"
+            android:orientation="horizontal"
+            android:background="@color/lightGrey"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/tv_status"
+                android:text="@string/status"
+                android:textSize="@dimen/label_text_size"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tv_result"
+                android:textAllCaps="true"
+                android:text="@string/unknown"
+                android:textSize="@dimen/label_text_size"
+                android:layout_marginLeft="@dimen/input_margin"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <FrameLayout
             android:id="@+id/bottomFragmentContainer"

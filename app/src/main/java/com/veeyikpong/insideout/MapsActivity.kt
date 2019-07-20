@@ -9,6 +9,7 @@ import android.location.Location
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -80,7 +81,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onEditSuccess(geofence: com.veeyikpong.insideout.Geofence, deviceLocation: LatLng) {
                 addGeofence(geofence)
                 updateMarkerLocation(deviceLocation)
-                checkInsideGeofence()
+                checkInsideGeofence(deviceLocation,geofence)
+                CommonUtils.hideKeyboard(this@MapsActivity)
             }
         })
 
@@ -88,6 +90,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fragmentTransaction.replace(R.id.bottomFragmentContainer, mEditLocationBottomSheetFragment)
         fragmentTransaction.commit()
 
+        //If managed to get current location, default will be current location, else, will use Kuala Lumpur location as default
         mFusedLocationProviderClient.lastLocation
             .addOnSuccessListener { location ->
                 updateMarkerLocation(LatLng(location.latitude, location.longitude))
@@ -108,7 +111,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun updateMarkerLocation(location: LatLng) {
-        // Add a marker in Sydney and move the camera
         if (::mDeviceLocationMarker.isInitialized) {
             mDeviceLocationMarker.remove()
         }
@@ -184,21 +186,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun checkInsideGeofence() {
-        if (!::mDeviceLocationMarker.isInitialized || !::mGeofenceAreaCircle.isInitialized) {
-            return
-        }
+    private fun checkInsideGeofence(deviceLocation: LatLng, geofence: com.veeyikpong.insideout.Geofence) {
         val distance = FloatArray(2)
 
         Location.distanceBetween(
-            mDeviceLocationMarker.position.latitude, mDeviceLocationMarker.position.longitude,
-            mGeofenceAreaCircle.center.latitude, mGeofenceAreaCircle.center.longitude, distance
+            deviceLocation.latitude, deviceLocation.longitude,
+            geofence.location.latitude, geofence.location.longitude, distance
         )
 
-        if (distance[0] > mGeofenceAreaCircle.radius) {
-            tv_status.text = "Outside"
+        if (distance[0] > geofence.radius) {
+            tv_result.text = getString(R.string.outside)
+            tv_result.setTextColor(Color.RED)
         } else {
-            tv_status.text = "Inside"
+            tv_result.text = getString(R.string.inside)
+            tv_result.setTextColor(ContextCompat.getColor(this, R.color.successGreen))
         }
     }
 }

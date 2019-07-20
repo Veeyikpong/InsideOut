@@ -9,7 +9,10 @@
     <string name="hint_radius">Radius</string>
     <string name="hint_wifi_network">Wifi Network Name</string>
 
-    <string name="device_inside_geofence_status">Device inside geofence</string>
+    <string name="status">Status: </string>
+    <string name="unknown">Unknown</string>
+    <string name="inside">Inside</string>
+    <string name="outside">Outside</string>
 
     <!--Bottom fragment-->
     <string name="check">Check</string>
