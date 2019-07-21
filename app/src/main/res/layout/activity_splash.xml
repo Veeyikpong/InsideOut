@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:background="@color/colorPrimary"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="@dimen/splash_icon_size"
+            android:layout_height="@dimen/splash_icon_size"
+            android:src="@drawable/ic_location_white_24dp"
+    />
+
+    <TextView
+            android:id="@+id/tv_appName"
+            app:layout_constraintTop_toBottomOf="@id/img_icon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/label_text_size_large"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <TextView
+            app:layout_constraintTop_toBottomOf="@id/tv_appName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:paddingRight="@dimen/default_padding"
+            android:paddingLeft="@dimen/default_padding"
+            android:gravity="center"
+            android:text="@string/app_description"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/label_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+</LinearLayout>

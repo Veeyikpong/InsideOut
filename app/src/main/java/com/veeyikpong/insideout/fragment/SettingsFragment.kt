@@ -1,4 +1,4 @@
-package com.veeyikpong.insideout
+package com.veeyikpong.insideout.fragment
 
 
 import android.os.Bundle
@@ -10,6 +10,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
+import com.veeyikpong.insideout.model.Geofence
+import com.veeyikpong.insideout.R
+import com.veeyikpong.insideout.utils.CommonUtils
+import com.veeyikpong.insideout.utils.OnEditGeofenceListener
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.lang.NumberFormatException
 

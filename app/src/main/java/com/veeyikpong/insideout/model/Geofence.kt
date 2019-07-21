@@ -1,4 +1,4 @@
-package com.veeyikpong.insideout
+package com.veeyikpong.insideout.model
 
 import com.google.android.gms.maps.model.LatLng
 

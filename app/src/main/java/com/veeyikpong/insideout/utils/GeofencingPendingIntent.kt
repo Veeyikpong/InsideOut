@@ -1,4 +1,4 @@
-package com.veeyikpong.insideout
+package com.veeyikpong.insideout.utils
 
 import android.app.IntentService
 import android.app.PendingIntent

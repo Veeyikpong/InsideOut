@@ -1,4 +1,4 @@
-package com.veeyikpong.insideout
+package com.veeyikpong.insideout.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -24,10 +24,18 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
-import kotlinx.android.synthetic.main.activity_maps.*
+import kotlinx.android.synthetic.main.activity_main.*
 import android.net.wifi.SupplicantState
 import android.net.wifi.WifiManager
+import android.view.View
 import android.widget.Toast
+import com.veeyikpong.insideout.utils.GeofencingPendingIntent
+import com.veeyikpong.insideout.R
+import com.veeyikpong.insideout.fragment.SettingsFragment
+import com.veeyikpong.insideout.utils.AppConstants
+import com.veeyikpong.insideout.utils.CommonUtils
+import com.veeyikpong.insideout.utils.OnEditGeofenceListener
+import es.dmoral.toasty.Toasty
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -43,7 +51,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
+        setContentView(R.layout.activity_main)
 
         mGeofencingClient = LocationServices.getGeofencingClient(this)
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -82,7 +90,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     fun initViews() {
         mSettingsFragment = SettingsFragment()
         mSettingsFragment.setOnEditGeofenceListener(object : OnEditGeofenceListener {
-            override fun onEditSuccess(geofence: com.veeyikpong.insideout.Geofence, deviceLocation: LatLng) {
+            override fun onEditSuccess(geofence: com.veeyikpong.insideout.model.Geofence, deviceLocation: LatLng) {
                 addGeofence(geofence)
                 updateMarkerLocation(deviceLocation)
                 checkInsideGeofence(deviceLocation, geofence)
@@ -127,7 +135,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     @SuppressLint("MissingPermission")
-    fun addGeofence(geofence: com.veeyikpong.insideout.Geofence) {
+    fun addGeofence(geofence: com.veeyikpong.insideout.model.Geofence) {
         val mGeofence = buildGeofence(
             geofence.location.latitude, geofence.location.longitude, geofence.radius
         )
@@ -190,18 +198,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun checkInsideGeofence(deviceLocation: LatLng, geofence: com.veeyikpong.insideout.Geofence) {
+    private fun checkInsideGeofence(deviceLocation: LatLng, geofence: com.veeyikpong.insideout.model.Geofence) {
         //prioritize Wifi Network
-        if(geofence.wirelessNetworkName.isNotEmpty()){
+        if (geofence.wirelessNetworkName.isNotEmpty()) {
             val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
             val wifiInfo: WifiInfo
 
             wifiInfo = wifiManager.connectionInfo
-            if (wifiInfo!=null && wifiInfo.supplicantState == SupplicantState.COMPLETED) {
-                if(wifiInfo.ssid!=null){
+            if (wifiInfo != null && wifiInfo.supplicantState == SupplicantState.COMPLETED) {
+                if (wifiInfo.ssid != null) {
                     //If wifi network matched, no need to check geographical location
-                    if(wifiInfo.ssid.equals(geofence.wirelessNetworkName)){
-                        setInside()
+                    //ssid will return double quote or backslash together, remove them
+                    if (wifiInfo.ssid.replace("\"","").equals(geofence.wirelessNetworkName)) {
+                        setInside(getString(R.string.wifi_network))
                         return
                     }
                 }
@@ -221,13 +230,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun setInside(){
+    private fun setInside(determineFactor: String = getString(R.string.geographical_location)) {
         tv_result.text = getString(R.string.inside)
+        tv_determine_factor.text = determineFactor
+        ll_determine_factor.visibility = View.VISIBLE
         tv_result.setTextColor(ContextCompat.getColor(this, R.color.successGreen))
+        Toasty.success(this, getString(R.string.device_inside_message), Toast.LENGTH_SHORT, true).show();
     }
 
-    private fun setOutside(){
+    private fun setOutside(determineFactor: String = getString(R.string.geographical_location)) {
         tv_result.text = getString(R.string.outside)
+        tv_determine_factor.text = determineFactor
+        ll_determine_factor.visibility = View.VISIBLE
         tv_result.setTextColor(Color.RED)
+        Toasty.error(this, getString(R.string.device_outside_message), Toast.LENGTH_SHORT, true).show();
     }
 }

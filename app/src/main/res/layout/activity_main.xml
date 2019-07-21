@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <fragment android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:id="@+id/map"
+              tools:context=".activity.MainActivity"
+              map:layout_constraintTop_toTopOf="parent"
+              map:layout_constraintBottom_toTopOf="@id/ll_status"
+              android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_status"
+            android:padding="@dimen/default_padding"
+            map:layout_constraintBottom_toTopOf="@id/bottomFragmentContainer"
+            android:orientation="horizontal"
+            android:background="@color/lightGrey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                map:layout_constraintLeft_toLeftOf="parent"
+                map:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/tv_status"
+                android:text="@string/status"
+                android:textSize="@dimen/label_text_size"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                map:layout_constraintLeft_toRightOf="@id/tv_status"
+                map:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/tv_result"
+                android:textAllCaps="true"
+                android:text="@string/unknown"
+                android:textSize="@dimen/label_text_size"
+                android:layout_marginLeft="@dimen/input_margin"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"/>
+
+        <LinearLayout
+                android:id="@+id/ll_determine_factor"
+                android:visibility="gone"
+                map:layout_constraintLeft_toRightOf="@id/tv_result"
+                map:layout_constraintTop_toTopOf="parent"
+                map:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginLeft="@dimen/input_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <TextView
+                    map:layout_constraintRight_toRightOf="parent"
+                    map:layout_constraintTop_toTopOf="parent"
+                    map:layout_constraintBottom_toBottomOf="parent"
+                    android:text="("
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/label_text_size_small"
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    map:layout_constraintRight_toRightOf="parent"
+                    map:layout_constraintTop_toTopOf="parent"
+                    map:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/tv_determine_factor"
+                    android:text="@string/wifi_network"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/label_text_size_small"
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    map:layout_constraintRight_toRightOf="parent"
+                    map:layout_constraintTop_toTopOf="parent"
+                    map:layout_constraintBottom_toBottomOf="parent"
+                    android:text=")"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/label_text_size_small"
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+            android:id="@+id/bottomFragmentContainer"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.veeyikpong.insideout.EditLocationBottomSheetFragment"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
