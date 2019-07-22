@@ -36,6 +36,7 @@
             android:paddingRight="@dimen/default_padding"
             android:paddingLeft="@dimen/default_padding"
             android:gravity="center"
+            android:visibility="gone"
             android:text="@string/app_description"
             android:textColor="@android:color/white"
             android:textSize="@dimen/label_text_size"
