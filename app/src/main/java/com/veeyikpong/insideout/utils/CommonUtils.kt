@@ -1,13 +1,8 @@
 package com.veeyikpong.insideout.utils
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import android.graphics.Bitmap
-import androidx.core.content.ContextCompat
 import android.app.Activity
 import android.content.Context
-import android.graphics.Canvas
 import android.view.inputmethod.InputMethodManager
-import com.google.android.gms.maps.model.BitmapDescriptor
 
 class CommonUtils {
     companion object{

@@ -15,10 +15,4 @@
         <item name="android:background">@drawable/rounded_background_primary</item>
         <item name="android:textStyle">bold</item>
     </style>
-
-    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-    </style>
 </resources>

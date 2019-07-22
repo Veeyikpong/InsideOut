@@ -5,37 +5,33 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
+import android.net.wifi.SupplicantState
 import android.net.wifi.WifiInfo
+import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
-import kotlinx.android.synthetic.main.activity_main.*
-import android.net.wifi.SupplicantState
-import android.net.wifi.WifiManager
-import android.view.View
-import android.widget.Toast
-import com.veeyikpong.insideout.utils.GeofencingPendingIntent
 import com.veeyikpong.insideout.R
 import com.veeyikpong.insideout.fragment.SettingsFragment
 import com.veeyikpong.insideout.utils.AppConstants
 import com.veeyikpong.insideout.utils.CommonUtils
-import com.veeyikpong.insideout.utils.OnEditGeofenceListener
+import com.veeyikpong.insideout.utils.GeofencingPendingIntent
+import com.veeyikpong.insideout.utils.SetGeofenceListener
 import es.dmoral.toasty.Toasty
+import kotlinx.android.synthetic.main.activity_main.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -46,6 +42,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mSettingsFragment: SettingsFragment
     private lateinit var mDeviceLocationMarker: Marker
     private lateinit var mGeofenceAreaCircle: Circle
+    private lateinit var mCurrentGeofence: com.veeyikpong.insideout.model.Geofence
 
     private val distance = FloatArray(2)
 
@@ -60,41 +57,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        checkPermission()
     }
 
-    fun checkPermission() {
-        //Permission handling
-        Dexter.withActivity(this)
-            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-            .withListener(object : PermissionListener {
-                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                }
-
-                override fun onPermissionRationaleShouldBeShown(
-                    permission: PermissionRequest?,
-                    token: PermissionToken?
-                ) {
-
-                }
-
-                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-
-                }
-            })
-            .check()
-    }
-
-    @SuppressLint("MissingPermission")
     fun initViews() {
         mSettingsFragment = SettingsFragment()
-        mSettingsFragment.setOnEditGeofenceListener(object : OnEditGeofenceListener {
+        mSettingsFragment.setListener(object : SetGeofenceListener {
             override fun onEditSuccess(geofence: com.veeyikpong.insideout.model.Geofence, deviceLocation: LatLng) {
                 addGeofence(geofence)
                 updateMarkerLocation(deviceLocation)
                 checkInsideGeofence(deviceLocation, geofence)
                 CommonUtils.hideKeyboard(this@MainActivity)
+            }
+
+            override fun onUseCurrentLocation() {
+                useCurrentLocation()
             }
         })
 
@@ -102,21 +78,42 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         fragmentTransaction.replace(R.id.bottomFragmentContainer, mSettingsFragment)
         fragmentTransaction.commit()
 
-        //If managed to get current location, default will be current location, else, will use Kuala Lumpur location as default
-        mFusedLocationProviderClient.lastLocation
-            .addOnSuccessListener { location ->
-                updateMarkerLocation(LatLng(location.latitude, location.longitude))
-                mSettingsFragment.setDeviceLocation(location.latitude, location.longitude)
-            }.addOnFailureListener {
-                updateMarkerLocation(AppConstants.KUALA_LUMPUR_LOCATION)
-                mSettingsFragment.setDeviceLocation(
-                    AppConstants.KUALA_LUMPUR_LOCATION.latitude,
-                    AppConstants.KUALA_LUMPUR_LOCATION.longitude
-                )
-            }
+        useCurrentLocation()
     }
 
+    //call this function to use current location as device location
     @SuppressLint("MissingPermission")
+    @AfterPermissionGranted(AppConstants.REQUEST_USE_CURRENT_LOCATION)
+    fun useCurrentLocation() {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            //If managed to get current location, default will be current location, else, will use Kuala Lumpur location as default
+            mFusedLocationProviderClient.lastLocation
+                .addOnSuccessListener { location ->
+                    updateMarkerLocation(LatLng(location.latitude, location.longitude))
+                    mSettingsFragment.setDeviceLocation(location.latitude, location.longitude)
+                    Toasty.info(this@MainActivity, getString(R.string.use_current_location), Toast.LENGTH_SHORT, true)
+                        .show()
+                }.addOnFailureListener {
+                    updateMarkerLocation(AppConstants.KUALA_LUMPUR_LOCATION)
+                    mSettingsFragment.setDeviceLocation(
+                        AppConstants.KUALA_LUMPUR_LOCATION.latitude,
+                        AppConstants.KUALA_LUMPUR_LOCATION.longitude
+                    )
+                    Toasty.info(
+                        this@MainActivity,
+                        getString(R.string.failed_to_get_current_location),
+                        Toast.LENGTH_SHORT,
+                        true
+                    ).show()
+                }
+        } else {
+            EasyPermissions.requestPermissions(
+                this@MainActivity, getString(R.string.permission_rationale_current_location),
+                AppConstants.REQUEST_USE_CURRENT_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         initViews()
@@ -134,32 +131,49 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mDeviceLocationMarker.showInfoWindow()
     }
 
-    @SuppressLint("MissingPermission")
+    @AfterPermissionGranted(AppConstants.REQUEST_ADD_GEOFENCE)
     fun addGeofence(geofence: com.veeyikpong.insideout.model.Geofence) {
-        val mGeofence = buildGeofence(
-            geofence.location.latitude, geofence.location.longitude, geofence.radius
-        )
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            mCurrentGeofence = geofence
+            val mGeofence = buildGeofence(
+                geofence.location.latitude, geofence.location.longitude, geofence.radius
+            )
 
-        if (geofence != null) {
-            mGeofencingClient.addGeofences(
-                buildGeofencingRequest(mGeofence!!), geofencePendingIntent
-            ).addOnSuccessListener {
-                val circleOptions = CircleOptions()
-                    .center(geofence.location)
-                    .radius(geofence.radius.toDouble())
-                    .fillColor(
-                        Color.argb(30, 30, 0, 255)
-                    )
-                    .strokeColor(Color.TRANSPARENT)
-                    .strokeWidth(2F)
+            if (mGeofence != null) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
 
-                if (::mGeofenceAreaCircle.isInitialized) {
-                    mGeofenceAreaCircle.remove()
+                    return
                 }
-                mGeofenceAreaCircle = mMap.addCircle(circleOptions)
-            }.addOnFailureListener { e ->
-                e.printStackTrace()
+
+                mGeofencingClient.addGeofences(
+                    buildGeofencingRequest(mGeofence!!), geofencePendingIntent
+                ).addOnSuccessListener {
+                    val circleOptions = CircleOptions()
+                        .center(geofence.location)
+                        .radius(geofence.radius.toDouble())
+                        .fillColor(
+                            Color.argb(30, 30, 0, 255)
+                        )
+                        .strokeColor(Color.TRANSPARENT)
+                        .strokeWidth(2F)
+
+                    if (::mGeofenceAreaCircle.isInitialized) {
+                        mGeofenceAreaCircle.remove()
+                    }
+                    mGeofenceAreaCircle = mMap.addCircle(circleOptions)
+                }.addOnFailureListener { e ->
+                    e.printStackTrace()
+                }
             }
+        } else {
+            EasyPermissions.requestPermissions(
+                this@MainActivity, getString(R.string.permission_rationale_geofence),
+                AppConstants.REQUEST_ADD_GEOFENCE, Manifest.permission.ACCESS_FINE_LOCATION
+            )
         }
     }
 
@@ -209,7 +223,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (wifiInfo.ssid != null) {
                     //If wifi network matched, no need to check geographical location
                     //ssid will return double quote or backslash together, remove them
-                    if (wifiInfo.ssid.replace("\"","").equals(geofence.wirelessNetworkName)) {
+                    if (wifiInfo.ssid.replace("\"", "").equals(geofence.wirelessNetworkName, true)){
                         setInside(getString(R.string.wifi_network))
                         return
                     }
@@ -235,7 +249,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         tv_determine_factor.text = determineFactor
         ll_determine_factor.visibility = View.VISIBLE
         tv_result.setTextColor(ContextCompat.getColor(this, R.color.successGreen))
-        Toasty.success(this, getString(R.string.device_inside_message), Toast.LENGTH_SHORT, true).show();
+        Toasty.success(this, getString(R.string.device_inside_message), Toast.LENGTH_SHORT, true).show()
     }
 
     private fun setOutside(determineFactor: String = getString(R.string.geographical_location)) {
@@ -243,6 +257,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         tv_determine_factor.text = determineFactor
         ll_determine_factor.visibility = View.VISIBLE
         tv_result.setTextColor(Color.RED)
-        Toasty.error(this, getString(R.string.device_outside_message), Toast.LENGTH_SHORT, true).show();
+        Toasty.error(this, getString(R.string.device_outside_message), Toast.LENGTH_SHORT, true).show()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 }

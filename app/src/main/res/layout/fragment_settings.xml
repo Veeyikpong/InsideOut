@@ -18,13 +18,13 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
+            android:weightSum="9"
             android:orientation="horizontal">
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_device_latitude"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_device_latitude"
@@ -37,9 +37,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_device_longitude"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_device_longitude"
@@ -49,6 +49,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_use_current_location"
+                android:src="@drawable/ic_my_location_24dp"
+                android:padding="@dimen/padding_small"
+                android:background="?actionBarItemBackground"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
     </LinearLayout>
 
     <TextView
@@ -65,35 +74,35 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_latitude"
-            android:layout_weight="1"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_latitude"
-                android:textSize="@dimen/input_text_size"
-                android:inputType="numberDecimal|numberSigned"
-                android:hint="@string/hint_latitude"
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_latitude"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-    </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_latitude"
+                    android:textSize="@dimen/input_text_size"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:hint="@string/hint_latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_longitude"
-            android:layout_weight="1"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_longitude"
-                android:textSize="@dimen/input_text_size"
-                android:inputType="numberDecimal|numberSigned"
-                android:hint="@string/hint_longitude"
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_longitude"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-    </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_longitude"
+                    android:textSize="@dimen/input_text_size"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:hint="@string/hint_longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_radius"
@@ -130,6 +139,7 @@
             android:layout_gravity="center"
             style="@style/ButtonTheme"
             android:id="@+id/btn_check"
+            android:foreground="?attr/selectableItemBackground"
             android:textColor="@android:color/white"
             android:textAllCaps="true"
             android:text="@string/check"

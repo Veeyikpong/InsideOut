@@ -10,19 +10,18 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
-import com.veeyikpong.insideout.model.Geofence
 import com.veeyikpong.insideout.R
+import com.veeyikpong.insideout.model.Geofence
 import com.veeyikpong.insideout.utils.CommonUtils
-import com.veeyikpong.insideout.utils.OnEditGeofenceListener
+import com.veeyikpong.insideout.utils.SetGeofenceListener
 import kotlinx.android.synthetic.main.fragment_settings.*
-import java.lang.NumberFormatException
 
 class SettingsFragment() : Fragment() {
 
-    private lateinit var onEditGeofenceListener: OnEditGeofenceListener
+    private lateinit var setGeofenceListener: SetGeofenceListener
 
-    fun setOnEditGeofenceListener(listener: OnEditGeofenceListener){
-        this.onEditGeofenceListener = listener
+    fun setListener(listener: SetGeofenceListener){
+        this.setGeofenceListener = listener
     }
 
     override fun onCreateView(
@@ -114,13 +113,17 @@ class SettingsFragment() : Fragment() {
             true
         }
 
+        ic_use_current_location.setOnClickListener {
+            setGeofenceListener.onUseCurrentLocation()
+        }
+
         btn_check.setOnClickListener {
             if (validate()) {
-                if(!::onEditGeofenceListener.isInitialized){
+                if(!::setGeofenceListener.isInitialized){
                     return@setOnClickListener
                 }
 
-                onEditGeofenceListener.onEditSuccess(
+                setGeofenceListener.onEditSuccess(
                     Geofence(
                         LatLng(
                             et_latitude.text.toString().toDouble(),
