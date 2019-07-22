@@ -1,11 +1,8 @@
 # InsideOut
 An Android application that will detect if the device is located inside of a geofence area. Developed in Kotlin.
 
-![Splash screen](https://picasaweb.google.com/113570045601075403944/6716365103948690705#6716365109274960962 "Splash screen")
-
-![Inside geofence area](https://picasaweb.google.com/113570045601075403944/6716365310097068401#6716365317196385106 "Inside geofence area")
-
-![Outside geofence area](https://picasaweb.google.com/113570045601075403944/6716365512629972225#6716365519730607170 "Outside geofence area")
+<img src="https://i.ibb.co/h2Z4GJN/screenshot-1563775509880.jpg" width="200" height="400"> <img src="https://i.ibb.co/2N3w31t/screenshot-1563775495401.jpg" width="200" height="400"> 
+<img src="https://i.ibb.co/sCxJWmg/screenshot-1563775533432.jpg" width="200" height="400">
 
 ## How to use?
 **A device is considered to be inside of the geofence area if the device is connected to the specified WiFi network or remains geographically inside the defined circle. 
@@ -42,8 +39,8 @@ I've included a UI test, (**GeofenceAreaTest.kt**) for this application, which w
  - Test when device does not located inside the geofence area, ignoring wifi name
  - Test when wifi network name does not match, but device is located geographically in the geofence area
  - Test when wifi network name does not match and device does not located inside the geofence area
- 
-![UI Test](https://picasaweb.google.com/113570045601075403944/6716376233999240785#6716376239497460322 "UI Test")
+
+[View preview here](https://i.ibb.co/4ZQ1qqh/insideout-uitest.gif)
 
 ## Libraries 
 
