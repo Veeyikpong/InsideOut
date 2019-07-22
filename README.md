@@ -8,7 +8,7 @@ An Android application that will detect if the device is located inside of a geo
 **A device is considered to be inside of the geofence area if the device is connected to the specified WiFi network or remains geographically inside the defined circle. 
 NOTE: if device coordinates are reported outside of the zone, but the device still connected to the specific Wifi network, then the device is treated as being inside the geofence area.**
 1. **Enter the device location**
-	By default, the device location is set to your current location. You can enter your custom latitude and longitude. Besides, you can also set back to your current location by pressing ![Current location icon](https://picasaweb.google.com/113570045601075403944/6716366623707512433#6716366625687554354 "Current Location icon")
+	By default, the device location is set to your current location. You can enter your custom latitude and longitude. Besides, you can also set back to your current location by pressing this icon <img src="https://i.ibb.co/sRTNVfv/ic-my-location.png" width="20" height="20">
 3. **Configure the geofence area**
 Configure the geofence area by inputting **latitude, longitude and radius**. You can also enter a wifi network full name to check.
 3. Press the **CHECK** button and you are good to go! App will display whether the device is inside / outside the geofence area, along with the determine factor (geographical location / wifi network).
