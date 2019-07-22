@@ -2,7 +2,7 @@
 An Android application that will detect if the device is located inside of a geofence area. Developed in Kotlin.
 
 <img src="https://i.ibb.co/h2Z4GJN/screenshot-1563775509880.jpg" width="200" height="400"> <img src="https://i.ibb.co/2N3w31t/screenshot-1563775495401.jpg" width="200" height="400"> 
-<img src="https://i.ibb.co/sCxJWmg/screenshot-1563775533432.jpg" width="200" height="400">
+<img src="https://i.ibb.co/YcJmQgJ/screenshot-1563775595178.jpg" width="200" height="400">
 
 ## How to use?
 **A device is considered to be inside of the geofence area if the device is connected to the specified WiFi network or remains geographically inside the defined circle. 
