@@ -8,7 +8,7 @@
     <string name="hint_latitude">Latitude</string>
     <string name="hint_longitude">Longitude</string>
     <string name="hint_radius">Radius</string>
-    <string name="hint_wifi_network">Connected Wifi Full Name (Case Insensitive)</string>
+    <string name="hint_wifi_network">Connected Wifi Name (Optional, Case Insensitive)</string>
     <string name="equal">Equals</string>
     <string name="contains">Contains</string>
     <string name="wifi_network">Wifi Network</string>
