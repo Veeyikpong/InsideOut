@@ -4,11 +4,11 @@
     <string name="title_activity_maps">Map</string>
     <string name="device_location">Device location</string>
 
-    <string name="geofence_area">Geofence Area</string>
+    <string name="geofence_area">Geofence Area (Location / Wifi name)</string>
     <string name="hint_latitude">Latitude</string>
     <string name="hint_longitude">Longitude</string>
     <string name="hint_radius">Radius</string>
-    <string name="hint_wifi_network">Connected Wifi Name (Optional, Case Insensitive)</string>
+    <string name="hint_wifi_network">Connected Wifi Full Name (Case Insensitive)</string>
     <string name="equal">Equals</string>
     <string name="contains">Contains</string>
     <string name="wifi_network">Wifi Network</string>
@@ -32,4 +32,5 @@
     <string name="error_invalid_latitude">Please enter a valid latitude</string>
     <string name="error_invalid_longitude">Please enter a valid longitude</string>
     <string name="error_invalid_radius">Please enter a valid radius</string>
+    <string name="about_this_app">About</string>
 </resources>

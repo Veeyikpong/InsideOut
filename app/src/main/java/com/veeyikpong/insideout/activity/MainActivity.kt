@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
+import android.net.Uri
 import android.net.wifi.SupplicantState
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.veeyikpong.insideout.BuildConfig
 import com.veeyikpong.insideout.R
 import com.veeyikpong.insideout.fragment.SettingsFragment
 import com.veeyikpong.insideout.utils.AppConstants
@@ -63,6 +65,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun initViews() {
+        tv_about.setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.GITHUB_PROJECT_URL))
+            startActivity(browserIntent)
+        }
+
         mSettingsFragment = SettingsFragment()
         mSettingsFragment.setListener(object : SetGeofenceListener {
             override fun onEditSuccess(geofence: com.veeyikpong.insideout.model.Geofence, deviceLocation: LatLng) {
@@ -230,7 +237,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (wifiInfo.ssid != null) {
                     //If wifi network matched, no need to check geographical location
                     //ssid will return double quote or backslash together, remove them
-                    if (wifiInfo.ssid.replace("\"", "").equals(geofence.wirelessNetworkName, true)){
+                    if (wifiInfo.ssid.replace("\"", "").equals(geofence.wirelessNetworkName, true)) {
                         setInside(getString(R.string.wifi_network))
                         return
                     }
@@ -262,10 +269,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //Show device is outside geofence area
-    private fun setOutside(determineFactor: String = getString(R.string.geographical_location)) {
+    private fun setOutside() {
         tv_result.text = getString(R.string.outside)
-        tv_determine_factor.text = determineFactor
-        ll_determine_factor.visibility = View.VISIBLE
+        ll_determine_factor.visibility = View.GONE
         tv_result.setTextColor(Color.RED)
         Toasty.error(this, getString(R.string.device_outside_message), Toast.LENGTH_SHORT, true).show()
     }
@@ -286,6 +292,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         this.doubleBackToExitPressedOnce = true
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
 
-        Handler().postDelayed({doubleBackToExitPressedOnce = false }, 2000)
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 }

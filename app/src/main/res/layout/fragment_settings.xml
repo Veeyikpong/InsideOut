@@ -16,6 +16,7 @@
     />
 
     <LinearLayout
+            android:layout_marginTop="@dimen/input_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="9"
@@ -31,6 +32,7 @@
                     android:textSize="@dimen/input_text_size"
                     android:inputType="numberDecimal|numberSigned"
                     android:hint="@string/hint_latitude"
+                    android:imeOptions="actionNext"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -46,6 +48,7 @@
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/input_text_size"
                     android:hint="@string/hint_longitude"
+                    android:imeOptions="actionNext"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -70,7 +73,8 @@
     />
 
     <LinearLayout
-            android:weightSum="2"
+            android:layout_marginTop="@dimen/input_margin"
+            android:weightSum="3"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -78,13 +82,14 @@
                 android:id="@+id/til_latitude"
                 android:layout_weight="1"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_latitude"
                     android:textSize="@dimen/input_text_size"
                     android:inputType="numberDecimal|numberSigned"
                     android:hint="@string/hint_latitude"
+                    android:imeOptions="actionNext"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,30 +98,34 @@
                 android:id="@+id/til_longitude"
                 android:layout_weight="1"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_longitude"
                     android:textSize="@dimen/input_text_size"
                     android:inputType="numberDecimal|numberSigned"
                     android:hint="@string/hint_longitude"
+                    android:imeOptions="actionNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_radius"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_radius"
+                    android:textSize="@dimen/input_text_size"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:hint="@string/hint_radius"
+                    android:imeOptions="actionNext"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
-    <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_radius"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_radius"
-                android:textSize="@dimen/input_text_size"
-                android:inputType="numberDecimal|numberSigned"
-                android:hint="@string/hint_radius"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_wireless_name"

@@ -5,6 +5,7 @@
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
     <fragment android:layout_width="match_parent"
               android:layout_height="0dp"
               android:id="@+id/map"
@@ -12,6 +13,21 @@
               map:layout_constraintTop_toTopOf="parent"
               map:layout_constraintBottom_toTopOf="@id/ll_status"
               android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <TextView
+            android:id="@+id/tv_about"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/label_text_size_small"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:drawableLeft="@drawable/ic_info_24dp"
+            android:text="@string/about_this_app"
+            android:layout_margin="@dimen/input_margin"
+    />
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_status"
