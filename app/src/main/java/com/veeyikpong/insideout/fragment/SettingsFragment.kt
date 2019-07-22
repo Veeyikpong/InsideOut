@@ -20,7 +20,7 @@ class SettingsFragment() : Fragment() {
 
     private lateinit var setGeofenceListener: SetGeofenceListener
 
-    fun setListener(listener: SetGeofenceListener){
+    fun setListener(listener: SetGeofenceListener) {
         this.setGeofenceListener = listener
     }
 
@@ -35,7 +35,35 @@ class SettingsFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        et_device_latitude.addTextChangedListener(object: TextWatcher{
+        et_device_latitude.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                et_device_latitude.error = null
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+        })
+
+        et_device_longitude.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                et_device_longitude.error = null
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+        })
+
+        et_latitude.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 et_latitude.error = null
             }
@@ -49,7 +77,7 @@ class SettingsFragment() : Fragment() {
             }
         })
 
-        et_device_longitude.addTextChangedListener(object: TextWatcher{
+        et_longitude.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 et_longitude.error = null
             }
@@ -63,35 +91,7 @@ class SettingsFragment() : Fragment() {
             }
         })
 
-        et_latitude.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                et_latitude.error = null
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-        })
-
-        et_longitude.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                et_longitude.error = null
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-        })
-
-        et_radius.addTextChangedListener(object: TextWatcher{
+        et_radius.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 et_radius.error = null
             }
@@ -106,7 +106,7 @@ class SettingsFragment() : Fragment() {
         })
 
         et_wireless_name.setOnEditorActionListener { v, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 CommonUtils.hideKeyboard(activity!!)
             }
 
@@ -119,7 +119,7 @@ class SettingsFragment() : Fragment() {
 
         btn_check.setOnClickListener {
             if (validate()) {
-                if(!::setGeofenceListener.isInitialized){
+                if (!::setGeofenceListener.isInitialized) {
                     return@setOnClickListener
                 }
 
@@ -132,13 +132,16 @@ class SettingsFragment() : Fragment() {
                         et_radius.text.toString().toFloat(),
                         et_wireless_name.text.toString()
                     ),
-                    LatLng(et_device_latitude.text.toString().toDouble(), et_device_longitude.text.toString().toDouble())
+                    LatLng(
+                        et_device_latitude.text.toString().toDouble(),
+                        et_device_longitude.text.toString().toDouble()
+                    )
                 )
             }
         }
     }
 
-    fun setDeviceLocation(latitude: Double, longitude: Double){
+    fun setDeviceLocation(latitude: Double, longitude: Double) {
         et_device_latitude.setText(latitude.toString())
         et_device_longitude.setText(longitude.toString())
     }
@@ -148,7 +151,7 @@ class SettingsFragment() : Fragment() {
 
         try {
             var radius = et_radius.text.toString().toFloat()
-        }catch (e: NumberFormatException){
+        } catch (e: NumberFormatException) {
             et_radius.error = getString(R.string.error_invalid_radius)
             validated = false
             et_radius.requestFocus()

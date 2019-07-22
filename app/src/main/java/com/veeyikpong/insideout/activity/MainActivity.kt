@@ -12,6 +12,7 @@ import android.net.wifi.SupplicantState
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -46,6 +47,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val distance = FloatArray(2)
 
+    private var doubleBackToExitPressedOnce = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -76,7 +79,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.bottomFragmentContainer, mSettingsFragment)
-        fragmentTransaction.commit()
+        fragmentTransaction.commitAllowingStateLoss()
 
         useCurrentLocation()
     }
@@ -119,6 +122,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         initViews()
     }
 
+    //Update marker location on map, and animate camera to that location
     private fun updateMarkerLocation(location: LatLng) {
         if (::mDeviceLocationMarker.isInitialized) {
             mDeviceLocationMarker.remove()
@@ -131,6 +135,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mDeviceLocationMarker.showInfoWindow()
     }
 
+    //Add geofence area on google map
     @AfterPermissionGranted(AppConstants.REQUEST_ADD_GEOFENCE)
     fun addGeofence(geofence: com.veeyikpong.insideout.model.Geofence) {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -177,6 +182,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    //Build geofence variable
     private fun buildGeofence(latitude: Double, longitude: Double, radius: Float): Geofence? {
         if (latitude != null && longitude != null && radius != null) {
             return Geofence.Builder()
@@ -212,6 +218,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
+    //Check if device location is inside geofence area
     private fun checkInsideGeofence(deviceLocation: LatLng, geofence: com.veeyikpong.insideout.model.Geofence) {
         //prioritize Wifi Network
         if (geofence.wirelessNetworkName.isNotEmpty()) {
@@ -231,6 +238,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+        //Geographical location check
         Location.distanceBetween(
             deviceLocation.latitude, deviceLocation.longitude,
             geofence.location.latitude, geofence.location.longitude, distance
@@ -244,6 +252,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    //Show device is inside geofence area
     private fun setInside(determineFactor: String = getString(R.string.geographical_location)) {
         tv_result.text = getString(R.string.inside)
         tv_determine_factor.text = determineFactor
@@ -252,6 +261,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         Toasty.success(this, getString(R.string.device_inside_message), Toast.LENGTH_SHORT, true).show()
     }
 
+    //Show device is outside geofence area
     private fun setOutside(determineFactor: String = getString(R.string.geographical_location)) {
         tv_result.text = getString(R.string.outside)
         tv_determine_factor.text = determineFactor
@@ -265,5 +275,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed({doubleBackToExitPressedOnce = false }, 2000)
     }
 }

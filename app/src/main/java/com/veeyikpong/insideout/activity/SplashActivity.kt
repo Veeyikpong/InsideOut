@@ -16,7 +16,7 @@ class SplashActivity: AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         setContentView(R.layout.activity_splash)
 
         if(!EasyPermissions.hasPermissions(this,Manifest.permission.ACCESS_FINE_LOCATION)){
-            EasyPermissions.requestPermissions(this, "",
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_rationale_current_location),
                 AppConstants.REQUEST_LOCATION_PERMISSION_SPLASH, Manifest.permission.ACCESS_FINE_LOCATION)
 
             return
@@ -50,5 +50,9 @@ class SplashActivity: AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         if(requestCode == AppConstants.REQUEST_LOCATION_PERMISSION_SPLASH){
             postSplash()
         }
+    }
+
+    override fun onBackPressed() {
+
     }
 }

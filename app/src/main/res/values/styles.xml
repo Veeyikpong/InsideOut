@@ -9,6 +9,7 @@
         <item name="android:textColor">@color/default_text_color</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 
     <style name="ButtonTheme" parent="AppTheme">
